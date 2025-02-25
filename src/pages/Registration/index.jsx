@@ -25,11 +25,11 @@ export const Registration = () => {
         mode: "onChange"
     })
 
-    const data  = useSelector(state => state.auth)
+
     const dispatch = useDispatch()
     const onSubmit = async (values) => {
         const data = await dispatch(fetchAuthSignUp(values))
-        console.log(data)
+
         if (!data.payload){
             alert('Не удалось зарегистрироваться')
         }

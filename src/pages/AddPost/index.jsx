@@ -14,7 +14,6 @@ export const AddPost = () => {
     const {id} = useParams();
     const isAuth = useSelector(selectIsAuth);
     const navigate = useNavigate();
-    // const [isLoading, setLoading] = useState(false);
     const [text, setText] = useState('');
     const [title, setTitle] = useState('');
     const [tags, setTags] = useState('');
@@ -43,8 +42,6 @@ export const AddPost = () => {
   const onChange = React.useCallback((value) => {
     setText(value);
   }, []);
-
-
   const onSubmit = async () => {
       try {
           const fields = {
@@ -65,7 +62,6 @@ export const AddPost = () => {
           alert('Error on creating post')
       }
   }
-
 
   useEffect(() => {
       if (id){
@@ -94,7 +90,7 @@ export const AddPost = () => {
     }),
     [],
   );
-    console.log(title, tags, text)
+
   if (!window.localStorage.getItem('token') && !isAuth){
       return <Navigate to={'/'}/>
   }

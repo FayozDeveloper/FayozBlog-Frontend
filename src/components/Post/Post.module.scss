@@ -7,7 +7,6 @@ $blue: #4361ee;
   overflow: hidden;
   margin-bottom: 15px;
   position: relative;
-
   &:hover {
     border: 1px solid $blue;
     box-shadow: 0 0 0 1px $blue;
@@ -51,7 +50,7 @@ $blue: #4361ee;
 }
 
 .indention {
-  padding-left: 40px;
+  padding: 0 40px 0 40px;
 }
 
 .title {

@@ -1,5 +1,4 @@
 import React from "react";
-
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -18,7 +17,7 @@ export const TagsBlock = ({ items, isLoading }) => {
           <Link
             key={i}
             style={{ textDecoration: "none", color: "black" }}
-            to={`/tags/${name}`}
+            to={`/tag/${name}`}
           >
             <ListItem disablePadding>
               <ListItemButton>

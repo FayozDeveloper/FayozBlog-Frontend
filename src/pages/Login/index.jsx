@@ -22,15 +22,14 @@ export const Login = () => {
       },
       mode: "onTouched"
   })
-    const data  = useSelector(state => state.auth)
+
     const dispatch = useDispatch()
     const onSubmit = async (values) => {
         const data = await dispatch(fetchAuthData(values))
-        console.log(data)
+
         if (!data.payload){
             alert('Не удалось авторизоваться')
         }
-
         if (data.payload.token) {
            window.localStorage.setItem('token', data.payload.token)
         } else {

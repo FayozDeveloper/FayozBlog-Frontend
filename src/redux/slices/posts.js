@@ -1,9 +1,14 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "../../axios";
 
-// const fetchPosts bu action (assinxronniy action)
+// const fetchPosts is async action
 export const fetchPosts = createAsyncThunk('/posts/fetchPosts' , async () => {
     const {data} = await axios.get('/posts');
+    return data
+})
+
+export const fetchPostByTag = createAsyncThunk('/tag/fetchPostByTag', async (tag) => {
+    const {data} = await axios.get(`/posts/tag/${tag}`)
     return data
 })
 
@@ -45,6 +50,19 @@ const postsSlice = createSlice({
             state.posts.items = action.payload;
         },
         [fetchPosts.rejected]: (state) => {
+            state.posts.items = [];
+            state.posts.status = 'error';
+        },
+        // GET POST BY TAG
+        [fetchPostByTag.pending]: (state) => {
+            state.posts.items = [];
+            state.posts.status = 'loading';
+        },
+        [fetchPostByTag.fulfilled]: (state, action) => {
+            state.posts.status = 'loaded';
+            state.posts.items = action.payload;
+        },
+        [fetchPostByTag.rejected]: (state) => {
             state.posts.items = [];
             state.posts.status = 'error';
         },
