@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
@@ -13,16 +13,24 @@ export const Home = () => {
     const userData = useSelector(state => state.auth.data)
     const isPostsLoading = posts.status === 'loading';
     const isTagsLoading = tags.status === 'loading';
-    useEffect(  () => {
-        dispatch(fetchPosts());
+    const [selectedTab, setSelectedTab] = useState(0);
+
+    const TabEnum = {
+      NEW: 0,
+      POPULAR: 1
+    }
+    
+    useEffect(() => {
+        dispatch(fetchPosts(selectedTab));
         dispatch(fetchTags());
-    }, [dispatch])
+    }, [dispatch, selectedTab])
+
 
   return (
     <>
-      <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
-        <Tab label="Новые" />
-        <Tab label="Популярные" />
+      <Tabs style={{ marginBottom: 15 }} value={selectedTab} aria-label="basic tabs example">
+        <Tab label="Новые" onClick={() => setSelectedTab(TabEnum.NEW)}/>
+        <Tab label="Популярные" onClick={() => setSelectedTab(TabEnum.POPULAR)}/>
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>
