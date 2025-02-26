@@ -1,25 +1,40 @@
 import React, {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 import { Post } from "../components/Post";
-import { Index } from "../components/AddComment";
+import { AddComment } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
 import axios from "../axios";
 import ReactMarkdown from "react-markdown";
 
 export const FullPost = () => {
-    const [data, setData] = useState({})
-    const [isLoading, setLoading] = useState(true)
+    const [data, setData] = useState({});
+    const [comments, setComments] = useState([]);
+    const [isLoading, setLoading] = useState(true);
     const { id } = useParams()
 
     useEffect(() => {
         axios.get(`/posts/${id}`).then(res => {
-            setData(res.data)
-            setLoading(false)
+            setData(res.data);
+            setComments(res.data.comments);
+            setLoading(false);
         }).catch((err) => {
-            console.warn(err)
-            alert('Ошибка при получение статьм')
+            console.warn(err);
+            alert('Ошибка при получение статьм');
         })
     }, [id])
+
+    const handleAddComment = async (text) => {
+      try {
+          const { data } = await axios.post(`/posts/${id}/comments`, {
+            postId: id,
+            text
+          });
+          setComments((prev) => [...prev, data]);;
+      } catch (err) {
+          console.warn('Ошибка при добавлении комментария:', err);
+          alert('Не удалось добавить комментарий');
+      }
+    }
 
     if (isLoading) {
         return <Post isLoading={isLoading} isFullPost/>
@@ -34,32 +49,17 @@ export const FullPost = () => {
             user={data.author}
             createdAt={data.createdAt}
             viewsCount={data.views}
-            commentsCount={3}
+            commentsCount={comments.length}
             tags={data.tags}
             isFullPost
           >
               <ReactMarkdown children={data.text}/>
           </Post>
           <CommentsBlock
-            items={[
-              {
-                user: {
-                  fullName: "Вася Пупкин",
-                  avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-                },
-                text: "Это тестовый комментарий 555555",
-              },
-              {
-                user: {
-                  fullName: "Иван Иванов",
-                  avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-                },
-                text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-              },
-            ]}
+            items={comments}
             isLoading={false}
           >
-            <Index />
+            <AddComment onAddComment={handleAddComment} />
           </CommentsBlock>
         </>
   );

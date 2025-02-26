@@ -19,7 +19,7 @@ export const Home = () => {
       NEW: 0,
       POPULAR: 1
     }
-    
+
     useEffect(() => {
         dispatch(fetchPosts(selectedTab));
         dispatch(fetchTags());
@@ -44,7 +44,7 @@ export const Home = () => {
                   user={item.author}
                   createdAt={item.createdAt}
                   viewsCount={item.views}
-                  commentsCount={3}
+                  commentsCount={item.comments.length}
                   tags={item.tags}
                   isEditable={userData?._id === item.author._id}
               />
